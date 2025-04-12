@@ -63,27 +63,61 @@ let data = [
   
   
   
-  let longestMovies = data.map(movies=>{
-      let longest = movies.bestScenes.reduce((max,scens)=>{
-          return parseInt(scens.duration)>parseInt(max.duration)?scene:max;
-      })
-      return {
-          movieName:movies.movieName,
-          longestMoviesDuration:parseInt(longest.duration)
-      }
-  })
-  console.log(longestMovies)
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+ //1. Find Best Scene Duration per Movie
+let longestScenes = data.map(movie => {
+  let longest = movie.bestScenes.reduce((max, scene) => {
+    return parseInt(scene.duration) > parseInt(max.duration) ? scene : max;
+  });
+  return {
+    movieName: movie.movieName,
+    longestSceneDuration: parseInt(longest.duration)
+  };
+});
+
+console.log(longestScenes);
+
+//Total Duration of Best Scenes
+
+let totalDuration = data.reduce((total, movie) => {
+  return total + movie.bestScenes.reduce((sum, scene) => {
+    return sum + parseInt(scene.duration);
+  }, 0);
+}, 0);
+
+console.log("Total Best Scenes Duration:", totalDuration + " mins");
+
+//Find All Unique Actors
+let allActors = data.flatMap(movie => movie.actors);
+let uniqueActors = [...new Set(allActors)];
+
+console.log("Unique Actors:", uniqueActors);
+
+//Average Rating with 
+
+let averageRating = data.reduce((sum, movie) => sum + movie.rating, 0) / data.length;
+console.log("Average Rating:", averageRating.toFixed(2));
+
+
+// Modify Movie List to Include Release Year and Genre
+data[0].releaseYear = 2025;
+data[0].genre = "Drama"
+
+
+// Filter by rating
+function filterMoviesByRating(movies, rating) {
+  return movies.filter(movie => movie.rating === rating);
+}
+
+console.log(filterMoviesByRating(data, 4.9));
+
+//Sort Movie List
+
+let sortedByRating = [...data].sort((a, b) => b.rating - a.rating);
+console.log(sortedByRating.map(m => m.movieName));
+
+//Sort by Movie Name Alphabetically
+let sortedByName = [...data].sort((a, b) => a.movieName.localeCompare(b.movieName));
+console.log(sortedByName.map(m => m.movieName));
+
+
